@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zelený Dom | Bar & Pizzeria</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#0b0f14;color:white;line-height:1.6}
+
+/* NAVBAR */
+nav{
+  position:fixed; top:0; width:100%; background:rgba(2,6,23,.85);
+  backdrop-filter:blur(12px); display:flex; justify-content:center; gap:40px;
+  padding:18px; z-index:1000; border-bottom:1px solid #1e293b;
+  font-weight:500;
+}
+nav a{color:white; text-decoration:none; letter-spacing:.5px; position:relative; transition:.3s}
+nav a:after{content:""; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:#22c55e; transition:.3s}
+nav a:hover:after{width:100%} nav a:hover{color:#22c55e}
+
+/* HERO */
+.hero{
+  height:100vh; display:flex; align-items:center; justify-content:center; text-align:center;
+  background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.85)),
+  url("https://images.unsplash.com/photo-1513104890138-7c749659a591") center/cover no-repeat;
+  padding:20px;
+}
+.hero-content{ max-width:900px; animation:fadeUp 1.2s ease }
+.hero h1{ font-size:72px; letter-spacing:3px; margin-bottom:12px; font-weight:700 }
+.hero p{ font-size:20px; margin-bottom:35px; color:#d1d5db }
+.buttons{ display:flex; flex-wrap:wrap; justify-content:center; gap:18px }
+.btn{ padding:14px 36px; border-radius:40px; font-weight:600; text-decoration:none;
+     cursor:pointer; border:none; background:#22c55e; color:white;
+     box-shadow:0 8px 25px rgba(34,197,94,.35); transition:.35s }
+.btn:hover{transform:translateY(-3px) scale(1.05); background:#16a34a}
+.btn-outline{ background:transparent; border:2px solid #22c55e; box-shadow:none }
+
+/* SECTIONS */
+section{padding:110px 10%}
+.section-title{text-align:center; font-size:44px; margin-bottom:60px; letter-spacing:1px; font-weight:600}
+
+/* FEATURE SECTION */
+.features{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:30px; margin-top:40px }
+.feature{ background:#020617; padding:30px; border-radius:18px; border:1px solid #1e293b; text-align:center; transition:.35s }
+.feature:hover{ transform:translateY(-8px); box-shadow:0 15px 40px rgba(0,0,0,.6) }
+.feature h3{ margin-bottom:12px; color:#22c55e }
+
+/* GALLERY */
+.gallery{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px }
+.gallery img{ width:100%; height:260px; object-fit:cover; border-radius:18px; transition:.4s }
+.gallery img:hover{transform:scale(1.08)}
+
+/* MENU MODAL */
+.menu-modal{ position:fixed; top:0; left:0; width:100%; height:100%; background:#020617; overflow-y:auto; z-index:2000; padding:100px 10%; display:none }
+.menu-modal.active{display:block}
+.close-menu{ position:absolute; top:30px; right:50px; font-size:32px; cursor:pointer; color:#22c55e }
+.menu-tabs{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:50px }
+.menu-tab{ padding:10px 22px; border-radius:30px; border:1px solid #1e293b; cursor:pointer; transition:.3s; font-weight:500 }
+.menu-tab.active{background:#22c55e;border:none; color:white}
+.menu-section{display:none} .menu-section.active{display:block}
+.menu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:25px }
+.menu-item{ background:linear-gradient(145deg,#0f172a,#020617); padding:24px; border-radius:18px; border:1px solid #1e293b; transition:.35s }
+.menu-item:hover{ transform:translateY(-8px); box-shadow:0 15px 40px rgba(0,0,0,.6) }
+.menu-item h4{ font-size:20px; margin-bottom:6px; color:#ffffff; font-weight:600 }
+.menu-item .ingredients{ font-size:14px; color:#d1d5db; margin-bottom:8px; }
+.menu-item .price{ font-weight:700; color:#22c55e; font-size:16px }
+
+/* DAILY MENU */
+.daily-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:24px }
+.day-card{ background:linear-gradient(160deg,#111827,#020617); border:1px solid #1e293b; border-radius:20px; padding:26px; transition:.35s; position:relative; font-weight:500 }
+.day-card:hover{ transform:translateY(-10px); box-shadow:0 20px 50px rgba(0,0,0,.65) }
+.day-title{ font-size:20px; font-weight:600; margin-bottom:10px; color:#22c55e }
+
+/* RESERVATION */
+form{ max-width:520px; margin:auto; display:flex; flex-direction:column; gap:16px }
+input,select,textarea{ padding:14px; border-radius:10px; border:none; background:#111827; color:white; font-weight:500 }
+input::placeholder, textarea::placeholder{ color:#9ca3af }
+button{ padding:14px; background:#22c55e; border:none; color:white; font-weight:600; border-radius:10px; cursor:pointer }
+button:hover{background:#16a34a}
+
+/* CONTACT */
+.contact{text-align:center;font-size:18px;line-height:1.8; color:#d1d5db}
+iframe{ margin-top:30px; width:100%; height:350px; border:none; border-radius:14px }
+footer{ text-align:center; padding:35px; background:#020617; border-top:1px solid #1e293b; color:#9ca3af }
+
+@keyframes fadeUp{ from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .hero h1 { font-size:60px; }
+  .hero p { font-size:20px; }
+  .menu-grid, .daily-grid, .gallery { grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:18px; }
+}
+@media (max-width: 768px) {
+  nav { gap:20px; padding:14px; }
+  .hero h1 { font-size:48px; }
+  .hero p { font-size:18px; }
+  .btn { padding:12px 28px; font-size:14px; }
+  section { padding:80px 5%; }
+  .menu-grid, .daily-grid, .gallery { grid-template-columns: 1fr; gap:16px; }
+  .feature { padding:20px; }
+  .menu-item { padding:18px; }
+  .day-card { padding:20px; }
+}
+@media (max-width: 480px) {
+  nav { flex-direction: column; gap:12px; }
+  .hero h1 { font-size:36px; }
+  .hero p { font-size:16px; }
+  .btn { width:100%; padding:12px; }
+  .section-title { font-size:32px; margin-bottom:40px; }
+  form input, form select, form textarea, button { font-size:14px; }
+  iframe { height:250px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#">Domov</a>
+  <a href="#about">O nás</a>
+  <a href="#gallery">Galéria</a>
+  <a href="#reservation">Rezervácia</a>
+  <a href="#contact">Kontakt</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Zelený Dom</h1>
+    <p>Bar & Pizzeria • Banská Štiavnica</p>
+    <div class="buttons">
+      <button class="btn" onclick="openMenu()">Pozrieť celé menu</button>
+      <a class="btn btn-outline" href="https://www.bistro.sk/menu/zeleny-dom-43" target="_blank">Objednať cez Bistro</a>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">Prečo prísť k nám</h2>
+  <div class="features">
+    <div class="feature"><h3>🍕 Čerstvá pizza</h3><p>Pizza pripravovaná z kvalitných surovín a pečená s dôrazom na autentickú chuť.</p></div>
+    <div class="feature"><h3>🍺 Skvelý bar</h3><p>Široký výber pív, drinkov, whisky a rumov pre každého milovníka dobrého nápoja.</p></div>
+    <div class="feature"><h3>🏡 Príjemná atmosféra</h3><p>Moderný priestor v srdci mesta ideálny na stretnutia s priateľmi.</p></div>
+    <div class="feature"><h3>📍 Centrum mesta</h3><p>Nachádzame sa v krásnom historickom prostredí mesta.</p></div>
+  </div>
+</section>
+
+<!-- MENU MODAL -->
+<div id="menuModal" class="menu-modal">
+  <div class="close-menu" onclick="closeMenu()">✕</div>
+  <h2 class="section-title">Kompletné Menu</h2>
+
+  <div class="menu-tabs">
+    <div class="menu-tab active" onclick="showMenu('daily',this)">Denné menu</div>
+    <div class="menu-tab" onclick="showMenu('pizza',this)">Pizza</div>
+    <div class="menu-tab" onclick="showMenu('special',this)">Špeciality</div>
+    <div class="menu-tab" onclick="showMenu('salad',this)">Šaláty</div>
+    <div class="menu-tab" onclick="showMenu('drink',this)">Nápoje</div>
+  </div>
+
+<style>
+  .menu-item h4{ font-size:20px; margin-bottom:4px; color:#ffffff; }
+  .menu-item .ingredients{ font-size:14px; color:#d1d5db; margin-bottom:8px; }
+  .menu-item .price{ font-weight:700; color:#22c55e; font-size:16px; }
+  .menu-item{ transition:.3s; }
+  .menu-item:hover{ transform:translateY(-6px) scale(1.02); box-shadow:0 12px 30px rgba(34,197,94,.35); }
+</style>
+
+  <!-- DENNÉ MENU -->
+  <div id="daily" class="menu-section active">
+    <div class="daily-grid">
+      <div class="day-card"><div class="day-title">Pondelok</div>Kuracie kúsky v cheddar omáčke<br>Americké zemiaky<br><b>6.80€</b></div>
+      <div class="day-card"><div class="day-title">Utorok</div>Bravčový plátok na paprike<br>Ryža • Kyslá uhorka<br><b>6.80€</b></div>
+      <div class="day-card"><div class="day-title">Streda</div>Grécky šalát s kuracím mäsom<br>Syrový toast<br><b>7.50€</b></div>
+      <div class="day-card"><div class="day-title">Štvrtok</div>Vyprážaný kurací rezeň<br>Hranolky • Tatárska<br><b>7.50€</b></div>
+      <div class="day-card"><div class="day-title">Piatok</div>Vyprážaný syr<br>Hranolky • Tatárska<br><b>7.50€</b></div>
+    </div>
+  </div>
+
+  <!-- PIZZA -->
+  <div id="pizza" class="menu-section">
+    <div class="menu-grid">
+      <div class="menu-item">
+        <h4>Margherita</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella</p>
+        <div class="price">6.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Nutella Dado</h4>
+        <p class="ingredients">Nutella, mascarpone, ovocie podľa sezóny</p>
+        <div class="price">7.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Prosciutto</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Šunka, Kukurica</p>
+        <div class="price">7.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Salami</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Suchá+Pikantná saláma, Kukurica</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Calabrese</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Feferóny, Cesnak</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Prosciutto e funghi</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Šunka, Šampióny</p>
+        <div class="price">7.90€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Hawaii</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Šunka, Ananás</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Brava</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, kuracie mäso, šunka, bazalka, syr Bambino</p>
+        <div class="price">8.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Bolero</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, šunka, šampiňóny, kukurica</p>
+        <div class="price">7.90€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Broccoli</h4>
+        <p class="ingredients">Smotanový základ, Mozzarella, syr Niva, brokolica</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Tonno</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, tuniak, cibuľa, olivy</p>
+        <div class="price">7.90€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Diavola</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, pikantná saláma, syr Niva, feferóny, chilli papričky</p>
+        <div class="price">8.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>4 Stagioni</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, šunka, šampiňóny, artičoky, olivy, feferóny</p>
+        <div class="price">8.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>4 Formaggi</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Gouda, Niva, Encián</p>
+        <div class="price">8.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Calzone (prekladaná)</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, šunka, šampiňóny</p>
+        <div class="price">8.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Contadina</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, klobása, saláma, slanina, vajce, cibuľa</p>
+        <div class="price">8.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Rukola</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, Prosciutto Crudo, rukola, cherry paradajky, Parmezán</p>
+        <div class="price">7.90€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Ortolana</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, červená paprika, cuketa, šampiňóny, cherry paradajky, olivový olej</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Mia Ragazza</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, šunka, oravská slanina, Niva, cibuľa</p>
+        <div class="price">8.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Slovacco</h4>
+        <p class="ingredients">Smotanový základ, bryndza, klobása, slanina, pažítka</p>
+        <div class="price">7.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Frutti di Mare</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, morské plody, cibuľa, čierne olivy</p>
+        <div class="price">9.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Mexikana</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, kuracie mäso, pikantná saláma, fazuľa, jalapeňo papričky</p>
+        <div class="price">8.00€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Pizza podľa vlastného výberu</h4>
+        <p class="ingredients">Paradajkový základ, Mozzarella, +3 druhy surovín podľa vlastného výberu</p>
+        <div class="price">9.50€</div>
+      </div>
+      <div class="menu-item">
+        <h4>Ricotta</h4>
+        <p class="ingredients">Smotanový základ, šunka, Mozzarella, Niva, Hermelín, vajce, cesnak</p>
+        <div class="price">7.50€</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ŠPECIALITY -->
+  <div id="special" class="menu-section">
+    <div class="menu-grid">
+      <div class="menu-item">Sous-vide bravčové koleno BBQ<div class="price">10.50€</div></div>
+      <div class="menu-item">Sous-vide bravčové rebrá<div class="price">9.00€</div></div>
+      <div class="menu-item">Koleno chilli-cesnak<div class="price">10.50€</div></div>
+      <div class="menu-item">Domáca klobása s chlebom<div class="price">7.50€</div></div>
+    </div>
+  </div>
+
+  <!-- ŠALÁTY -->
+  <div id="salad" class="menu-section">
+    <div class="menu-grid">
+      <div class="menu-item">Grécky šalát s kuracím mäsom</div>
+      <div class="menu-item">Zeleninový šalát s kuracím mäsom</div>
+      <div class="menu-item">Zeleninový šalát s tuniakom</div>
+    </div>
+  </div>
+
+  <!-- NÁPOJE -->
+  <div id="drink" class="menu-section">
+    <div class="menu-grid">
+      <div class="menu-item">Nealkoholické nápoje</div>
+      <div class="menu-item">Limonády</div>
+      <div class="menu-item">Pivo</div>
+      <div class="menu-item">Víno</div>
+      <div class="menu-item">Miešané drinky</div>
+      <div class="menu-item">Whisky</div>
+      <div class="menu-item">Rum</div>
+      <div class="menu-item">Likéry</div>
+    </div>
+  </div>
+
+</div>
+
+<section id="gallery">
+  <h2 class="section-title">Galéria</h2>
+  <div class="gallery">
+    <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe" alt="Pizza">
+    <img src="https://images.unsplash.com/photo-1601924582975-7e13c0d1b5d3" alt="Bar">
+    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5" alt="Interiér">
+    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4" alt="Príprava jedla">
+  </div>
+</section>
+
+<section id="reservation">
+  <h2 class="section-title">Rezervácia stola</h2>
+  <form>
+    <input type="text" placeholder="Meno" required>
+    <input type="tel" placeholder="Telefón" required>
+    <input type="date" required>
+    <input type="time" required>
+    <select>
+      <option>2 osoby</option>
+      <option>3 osoby</option>
+      <option>4 osoby</option>
+      <option>5+ osôb</option>
+    </select>
+    <textarea placeholder="Poznámka"></textarea>
+    <button type="submit">Odoslať rezerváciu</button>
+  </form>
+</section>
+
+<section id="contact">
+  <h2 class="section-title">Kontakt</h2>
+  <div class="contact">
+    Zelený Dom Bar & Pizzeria<br> Banská Štiavnica<br> Tel: +421 XXX XXX XXX<br> Email: info@zelenydom.sk
+    <iframe src="https://maps.google.com/maps?q=Banska%20Stiavnica&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+  </div>
+</section>
+
+<footer>© 2026 Zelený Dom</footer>
+
+<script>
+function openMenu(){document.getElementById('menuModal').classList.add('active')}
+function closeMenu(){document.getElementById('menuModal').classList.remove('active')}
+function showMenu(id,el){
+  let sections=document.querySelectorAll('.menu-section'); sections.forEach(s=>s.classList.remove('active'))
+  document.getElementById(id).classList.add('active')
+  let tabs=document.querySelectorAll('.menu-tab'); tabs.forEach(t=>t.classList.remove('active'))
+  el.classList.add('active')
+}
+</script>
+</body>
+</html>
